@@ -1,0 +1,24 @@
+  - id: auto-commit-message
+    name: Generate commit message
+    description: Parse modified files for post metadata
+    entry: auto-commit-message
+    language: python
+    types: [markdown]
+  - id: check-dummy-text
+    name: Check for dummy-* text
+    description: Call out instances of dummy-* in posts/pages
+    entry: '(?i)dummy\-.+'
+    language: pygrep
+    types: [markdown]
+  - id: check-orphan-tags
+    name: Check for orphan tags
+    description: Find tags orphaned within a post/page that are not in metadata
+    entry: check-orphan-tags
+    language: python
+    types: [markdown]
+  - id: fix-bear-export-quirks
+    name: Fix Bear export quirks
+    description: Correct and modify in-place Bear.app's funky Markdown implementation
+    entry: check-orphan-tags
+    language: python
+    types: [markdown]
