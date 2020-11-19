@@ -4,6 +4,11 @@ version = "0.1.0"
 description = "Cade's Razmatazz Static Blog Pre-commit Hooks"
 authors = ["Cade Ekblad-Frank <cade@e-f.me>"]
 
+[tool.poetry.scripts]
+auto-commit-message = 'pre_commit_hooks_blog.auto_commit_message:main'
+check-orphan-tags = 'pre_commit_hooks_blog.check_orphan_tags:main'
+fix-bear-export-quirks = 'pre_commit_hooks_blog.fix_bear_export_quirks:main'
+
 [tool.poetry.dependencies]
 python = "^3.8"
 
