@@ -10,9 +10,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
+    - name: Environment Variable - PY
+      run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
     - name: Cache virtualenv
       uses: actions/cache@v2
       with:
-        path: ~/.virtualenvs
-        key: ${{ runner.os }}-venv-${{ hashFiles('.pre-commit-config.yaml') }}
+        path: ~/.cache/pre-commit
+        key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
     - uses: pre-commit/action@v2.0.0
