@@ -31,6 +31,7 @@
   - id: markdown-link-check
     name: markdown-link-check
     description: Check links in your markdown documents with markdown-link-check (https://github.com/tcort/markdown-link-check)
-    entry: markdownlint
+    entry: markdown-link-check
     language: node
     types: [markdown]
+    additional_dependencies: ['markdown-link-check@3.8.3']
