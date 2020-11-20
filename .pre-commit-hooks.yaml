@@ -4,9 +4,9 @@
     entry: auto-commit-message
     language: python
     types: [markdown]
-  - id: check-dummy
+  - id: check-placeholders
     name: Check for dummy-* text
-    description: Call out instances of dummy-* in posts/pages
+    description: Call out instances of placeholder-* in posts/pages
     entry: '(?i)\bdummy\-\w+'
     language: pygrep
     types: [markdown]
@@ -22,3 +22,15 @@
     entry: check-orphan-tags
     language: python
     types: [markdown]
+  - id: markdownlint
+    name: Markdownlint
+    description: Lint your markdown documents with markdownlint (https://github.com/DavidAnson/markdownlint)
+    entry: mdl
+    language: ruby
+    types: [markdown]
+  # - id: markdown-link-check
+  #   name: markdown-link-check
+  #   description: Check links in your markdown documents with markdown-link-check (https://github.com/tcort/markdown-link-check)
+  #   entry: markdownlint
+  #   language: npm
+  #   types: [markdown]

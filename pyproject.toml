@@ -7,10 +7,12 @@ authors = ["Cade Ekblad-Frank <cade@e-f.me>"]
 [tool.poetry.scripts]
 auto-commit-message = 'pre_commit_hooks_blog.auto_commit_message:main'
 check-orphan-tags = 'pre_commit_hooks_blog.check_orphan_tags:main'
+check-placeholders = 'pre_commit_hooks_blog.check_placeholders:main'
 fix-bear-export-quirks = 'pre_commit_hooks_blog.fix_bear_export_quirks:main'
 
 [tool.poetry.dependencies]
 python = "^3.8"
+click = "^7.1.2"
 
 
 [tool.poetry.dev-dependencies]
