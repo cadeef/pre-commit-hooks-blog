@@ -8,8 +8,4 @@ Gem::Specification.new do |s|
   s.summary = 'pre-commit-hooks-blog'
   s.description = 'pre-commit-hooks-blog'
   s.add_dependency 'mdl', '0.11.0'
-  # s.bindir = 'pre_commit_hooks_blog'
-  # s.executables = [
-  #   'run-markdownlint',
-  # ]
 end

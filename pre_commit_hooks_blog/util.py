@@ -12,3 +12,7 @@ def error(message: str, exit: Optional[int] = None) -> None:
     secho("ERROR: {}".format(message), fg="red")
     if exit:
         sys_exit(exit)
+
+
+def output_colorize():
+    pass

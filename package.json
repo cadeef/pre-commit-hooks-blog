@@ -1,0 +1,9 @@
+{
+  "name": "fake_mlc_package",
+  "version": "0.0.0",
+  "description": "Install all the NPM things",
+  "author": "Cade Ekblad-Frank",
+  "dependencies": {
+    "markdown-link-check": "^3.8.3",
+  },
+}

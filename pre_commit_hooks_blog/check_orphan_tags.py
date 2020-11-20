@@ -11,9 +11,14 @@ import pre_commit_hooks_blog.util as pcu
     "files", nargs=-1, type=click.Path(exists=True), metavar="</path/to/file>"
 )
 @click.option(
+    "--remove/--no-remove",
+    default=False,
+    help="Remove tags represented in metadata from body, off by default",
+)
+@click.option(
     "--ansi/--no-ansi", default=True, help="Toggle color output, on by default"
 )
-def main(files: Tuple[Path, ...], ansi: bool = True):
+def main(files: Tuple[Path, ...], remove: bool = False, ansi: bool = True) -> None:
     pcu.output(str(files), ansi=ansi)
 
 

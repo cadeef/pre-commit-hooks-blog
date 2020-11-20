@@ -28,9 +28,9 @@
     entry: mdl
     language: ruby
     types: [markdown]
-  # - id: markdown-link-check
-  #   name: markdown-link-check
-  #   description: Check links in your markdown documents with markdown-link-check (https://github.com/tcort/markdown-link-check)
-  #   entry: markdownlint
-  #   language: npm
-  #   types: [markdown]
+  - id: markdown-link-check
+    name: markdown-link-check
+    description: Check links in your markdown documents with markdown-link-check (https://github.com/tcort/markdown-link-check)
+    entry: markdownlint
+    language: node
+    types: [markdown]
