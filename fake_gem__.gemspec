@@ -1,6 +1,3 @@
-# Many thanks to Paul Morgan (https://github.com/jumanjiman) whom I've
-# unabashedly stolen this approach from
-
 Gem::Specification.new do |s|
   s.name = 'fake_gem__'
   s.version = '0.0.0'
