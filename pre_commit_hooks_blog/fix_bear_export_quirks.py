@@ -9,7 +9,11 @@ import pre_commit_hooks_blog.util as pcu
 
 @click.command()
 @click.argument(
-    "files", nargs=-1, type=click.Path(exists=True), metavar="</path/to/file>"
+    "files",
+    required=True,
+    nargs=-1,
+    type=click.Path(exists=True),
+    metavar="</path(s)/to/fil(e)>",
 )
 @click.option(
     "--fix",
@@ -90,40 +94,53 @@ class Quirks(object):
     """Bear quirks"""
 
     def __init__(self, quirks: Optional[Tuple[str, ...]] = None) -> None:
-        # Verify that we're working with valid quirks
+        # Assume that if all is defined anywhere that all are wanted
         if quirks and "all" not in quirks:
-            for quirk in quirks:
-                if quirk not in self.all():
-                    raise KeyError("Quirk not found: {}".format(quirk))
             self.quirks = quirks
         else:
             self.quirks = self.all()
 
     def evaluate(self, file: Path, fix: bool = False) -> Dict[str, Tuple[int, str]]:
         """Evauluate and optionially act on exiting bear quirks, bread an butter of the class"""
-
-        def strikethrough():
-            """- -> ~~"""
-            return Quirk(r"^\b\-([\w\-]+)-\b", r"~~%%MATCH%%~~", fix=fix).find(file)
-
-        def line_separator():
-            """"- - - -"""
-            return Quirk(r"^\- \- \- \-\b", r"---", fix=fix).find(file)
+        self._fix = fix
+        self._file = file
 
         # Make that magic
         results = {}
         for quirk in self.quirks:
             try:
-                results[quirk] = eval(quirk)
-            except Exception as e:
-                raise e
+                results[quirk] = getattr(self, quirk)()
+            except AttributeError:
+                raise InvalidQuirk("Quirk: {} doesn't exist!".format(quirk))
 
         return results
 
+    def strikethrough(self):
+        """- -> ~~"""
+        return Quirk(r"^\b\-([\w\-]+)-\b", r"~~%%MATCH%%~~", fix=self.fix).find(
+            self.file
+        )
+
+    def line_separator(self):
+        """"- - - -"""
+        return Quirk(r"^\- \- \- \-\b", r"---", fix=self.fix).find(self.file)
+
+    def header_newline(self):
+        pass
+
     @staticmethod
     def all() -> Tuple[str, ...]:
-        # FIXME: Need to remember how to list inner functions
-        return ("strikethrough", "line_separator")
+        # Hokey but works for now
+        return tuple(
+            q
+            for q in dir(Quirks)
+            if not q.startswith("__") and q not in ("all", "evaluate")
+        )
+
+
+class InvalidQuirk(Exception):
+    # FIXME: Properly define exeption with __str__
+    pass
 
 
 if __name__ == "__main__":
