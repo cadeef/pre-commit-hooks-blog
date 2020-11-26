@@ -13,6 +13,7 @@ fix-bear-export-quirks = 'pre_commit_hooks_blog.fix_bear_export_quirks:main'
 [tool.poetry.dependencies]
 python = "^3.8"
 click = "^7.1.2"
+PyYAML = "^5.3.1"
 
 
 [tool.poetry.dev-dependencies]

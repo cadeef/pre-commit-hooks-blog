@@ -33,6 +33,13 @@ This script could be replaced with pygrep easily, but it is more approachable-- 
 @click.option(
     "--ansi/--no-ansi", default=True, help="Toggle color output, on by default"
 )
+@click.option(
+    "--verbose",
+    "-v",
+    is_flag=True,
+    default=False,
+    help="Verbose output, output is typically minimized.",
+)
 def main(
     files: Tuple[Path, ...],
     slug: Optional[Tuple[str, ...]] = None,
