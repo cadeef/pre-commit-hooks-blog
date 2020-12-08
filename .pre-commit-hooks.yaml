@@ -26,9 +26,10 @@
   - id: markdownlint
     name: Markdownlint
     description: Lint your markdown documents with markdownlint (https://github.com/DavidAnson/markdownlint)
-    entry: mdl
-    language: ruby
+    entry: markdownlint
+    language: node
     types: [markdown]
+    additional_dependencies: ['markdownlint-cli@0.25.0']
   - id: markdown-link-check
     name: markdown-link-check
     description: Check links in your markdown documents with markdown-link-check (https://github.com/tcort/markdown-link-check)

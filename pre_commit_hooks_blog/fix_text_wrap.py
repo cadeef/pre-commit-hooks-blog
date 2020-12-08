@@ -1,10 +1,11 @@
 from pathlib import Path
-from re import IGNORECASE, compile
 from typing import List, Tuple
 
 import click
 
 from pre_commit_hooks_blog.util import Hook, HookException, Post, Result
+
+# from textwrap import wrap
 
 
 @click.command()
@@ -16,9 +17,10 @@ from pre_commit_hooks_blog.util import Hook, HookException, Post, Result
     metavar="</path/to/file>",
 )
 @click.option(
-    "--remove/--no-remove",
-    default=False,
-    help="Remove tags represented in metadata from body, off by default",
+    "--width",
+    "-w",
+    type=int,
+    help="Width in characters to wrap. Default: 80",
 )
 @click.option(
     "--ansi/--no-ansi", default=True, help="Toggle color output, on by default"
@@ -32,7 +34,7 @@ from pre_commit_hooks_blog.util import Hook, HookException, Post, Result
 )
 def main(
     files: Tuple[Path, ...],
-    remove: bool = False,
+    width: int = 80,
     ansi: bool = True,
     verbose: bool = False,
 ) -> None:
@@ -45,22 +47,10 @@ def main(
 
 def run_step(file: Path) -> List[Result]:
     post = Post.load(file)
-
-    compiled = compile(r"(^|\s)+#[\w\-/]+\b", IGNORECASE)
-
-    results = []
-    for i, l in enumerate(post.body(return_type="list")):
-        matches = compiled.findall(l)
-        # FIXME: matches doesn't have strings of matches, come back with fresh eyes
-        if matches:
-            content = ""
-            for m in matches:
-                if m in post.tags:
-                    content += "{} (in meta) ".format(m)
-                else:
-                    content += "{} (not in meta) ".format(m)
-            results.append(Result(post.body_to_post_line(i), content))
-    return results
+    if post:
+        pass
+    # TODO: Implement text wrapping
+    return [Result(0, "File modified, text wrapped")]
 
 
 if __name__ == "__main__":

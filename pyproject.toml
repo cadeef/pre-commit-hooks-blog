@@ -9,6 +9,8 @@ auto-commit-message = 'pre_commit_hooks_blog.auto_commit_message:main'
 check-orphan-tags = 'pre_commit_hooks_blog.check_orphan_tags:main'
 check-placeholders = 'pre_commit_hooks_blog.check_placeholders:main'
 fix-bear-export-quirks = 'pre_commit_hooks_blog.fix_bear_export_quirks:main'
+run-mlc = 'pre_commit_hooks_blog.run_mlc:main'
+run-markdownlint = 'pre_commit_hooks_blog.run_markdownlint:main'
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -18,6 +20,8 @@ PyYAML = "^5.3.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+pytest-datadir = "^1.3.1"
+pytest-cov = "^2.10.1"
 
 [build-system]
 requires = ["poetry>=0.12"]

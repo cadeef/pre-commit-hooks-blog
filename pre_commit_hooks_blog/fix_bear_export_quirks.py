@@ -4,7 +4,7 @@ from typing import Dict, Optional, Pattern, Tuple
 
 import click
 
-import pre_commit_hooks_blog.util as pcu
+from pre_commit_hooks_blog.util import Hook, Result
 
 
 @click.command()
@@ -51,20 +51,44 @@ def main(
 
     Expects a path(s) to a file that exists.
     """
+    q = Quirks(quirks=quirks)
+
+    hook = BearQuirksHook(
+        name="fix_bear_export_quirks",
+        function=run_step,
+        ansi=ansi,
+        verbose=verbose,
+        quirks=q,
+    )
+    try:
+        hook.run(files)
+    except Exception as e:
+        raise e
+
+
+# FIXME: Make sense of the mess
+
+
+class BearQuirksHook(Hook):
+    """docstring for BearQuirksHook"""
+
+    # FIXME: define types
+    def __init__(self, name, function, ansi, verbose, quirks) -> None:
+        super(Hook, self).__init__()
+        self.quirks = quirks
+
+    def pre_run(self):
+        """Default pre-run function"""
+        super(Hook, self).pre_run()
+        if self.verbose:
+            self.output("Quirks: {}".format(", ".join(self.quirks)))
+
+
+def run_step(file: Path, quirks) -> Dict[str, Tuple[Result, ...]]:
+    # FIXME: Duh
     q = Quirks(quirks)
-
-    if verbose:
-        pcu.output("Processing Files: {}".format(", ".join(files)))  # type: ignore[arg-type]
-        pcu.output("Quirks: {}".format(", ".join(q.quirks)))
-
-    # Process files serially for simplicity
-    for file in files:
-        result = q.evaluate(file, fix=fix)
-        report(str(file), result, ansi=ansi)
-
-
-def report(file: str, result: Dict[str, Tuple[int, str]], ansi: bool = True) -> None:
-    pass
+    result = q.evaluate(file, quirks)
+    return result
 
 
 @dataclass
@@ -75,13 +99,13 @@ class Quirk(object):
     replace: str
     fix: bool = False
 
-    def modify(self) -> Tuple[Tuple[int, str], ...]:
+    def modify(self) -> Tuple[Result, ...]:
         pass
 
-    def notify(self) -> Tuple[Tuple[int, str], ...]:
+    def notify(self) -> Tuple[Result, ...]:
         pass
 
-    def find(self, file: Path) -> Tuple[Tuple[int, str], ...]:
+    def find(self, file: Path) -> Tuple[Result, ...]:
         self.file = file
         if self.fix:
             r = self.modify()
@@ -100,7 +124,7 @@ class Quirks(object):
         else:
             self.quirks = self.all()
 
-    def evaluate(self, file: Path, fix: bool = False) -> Dict[str, Tuple[int, str]]:
+    def evaluate(self, file: Path, fix: bool = False) -> Dict[str, Tuple[Result, ...]]:
         """Evauluate and optionially act on exiting bear quirks, bread an butter of the class"""
         self._fix = fix
         self._file = file
@@ -126,6 +150,7 @@ class Quirks(object):
         return Quirk(r"^\- \- \- \-\b", r"---", fix=self.fix).find(self.file)
 
     def header_newline(self):
+        """H1\n -> H1\n\n"""
         pass
 
     @staticmethod
@@ -139,7 +164,7 @@ class Quirks(object):
 
 
 class InvalidQuirk(Exception):
-    # FIXME: Properly define exeption with __str__
+    # FIXME: Properly define exeption
     pass
 
 

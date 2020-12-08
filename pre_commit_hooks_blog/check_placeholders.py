@@ -1,9 +1,10 @@
 from pathlib import Path
-from typing import Optional, Pattern, Tuple
+from re import IGNORECASE, compile
+from typing import List, Optional, Pattern, Tuple
 
 import click
 
-from pre_commit_hooks_blog.util import output
+from pre_commit_hooks_blog.util import Hook, Post, Result
 
 """
 This script could be replaced with pygrep easily, but it is more approachable-- I think.
@@ -12,7 +13,11 @@ This script could be replaced with pygrep easily, but it is more approachable-- 
 
 @click.command()
 @click.argument(
-    "files", nargs=-1, type=click.Path(exists=True), metavar="</path/to/file>"
+    "files",
+    required=True,
+    nargs=-1,
+    type=click.Path(exists=True),
+    metavar="</path/to/file>",
 )
 @click.option(
     "-s",
@@ -45,6 +50,7 @@ def main(
     slug: Optional[Tuple[str, ...]] = None,
     regex: Optional[Tuple[Pattern, ...]] = None,
     ansi: bool = True,
+    verbose: bool = False,
 ) -> None:
     """
     Search for placeholders that haven't been replaced during document authoring.
@@ -59,7 +65,28 @@ def main(
     check-placeholders -s 'placeholder-link' -s 'placeholder-code' -r '\\bdummy\\-\\w+\\b' my_really_cool.md
     """
 
-    output("{} {} {} {}".format(files, slug, regex, ansi))
+    # TODO: Generate regex based on options
+
+    pattern = r"placeholder\-[\w\-]+"
+    compiled = compile(pattern, IGNORECASE)
+
+    hook = Hook(name=__name__, function=run_step, ansi=ansi, verbose=verbose)
+    try:
+        hook.run(files, pattern=compiled)
+    except Exception as e:
+        raise e
+
+
+def run_step(file: Path, pattern: Pattern) -> List[Result]:
+    post = Post.load(file)
+
+    results = []
+    for i, l in enumerate(post.body(return_type="list")):
+        match = pattern.findall(l)
+        if match:
+            # TODO: Colorize match in line
+            results.append(Result(post.body_to_post_line(i), l))
+    return results
 
 
 if __name__ == "__main__":

@@ -1,5 +1,11 @@
 {
-    "name": "dummy_package",
-    "description": "Note: double curly-braces because python .format",
-    "version": "0.0.0"
+  "name": "dummy_package",
+  "version": "0.0.0",
+  "description": "pre-commit magic",
+  "bin": {
+    "run_markdownlint.py": "./pre_commit_hooks_blog/run_markdownlint.py"
+  },
+  "dependencies": {
+    "markdownlint-cli": "^0.25.0"
+  }
 }
